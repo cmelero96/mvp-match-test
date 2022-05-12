@@ -2,14 +2,23 @@
   <q-btn no-caps color="secondary" icon-right="calendar_today">
     <q-popup-proxy
       @before-show="updateProxy"
-      cover
       transition-show="scale"
       transition-hide="scale"
     >
-      <q-date v-model="proxyDate" color="dark" mask="YYYY.MM.DD">
-        <div class="row items-center justify-end q-gutter-sm">
+      <q-date v-model="proxyDate" today-btn color="dark" mask="YYYY.MM.DD">
+        <div class="row items-center justify-end relative-position">
+          <div v-if="!isValidDate" class="error-tooltip text-info">
+            End date cannot be before start date.
+          </div>
           <q-btn label="Cancel" color="primary" flat v-close-popup />
-          <q-btn label="OK" color="primary" flat @click="save" v-close-popup />
+          <q-btn
+            label="OK"
+            color="primary"
+            flat
+            @click="save"
+            v-close-popup
+            :disabled="!isValidDate"
+          />
         </div>
       </q-date>
     </q-popup-proxy>
@@ -17,7 +26,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 const formatDate = (date) => {
   const yyyy = date.getFullYear();
@@ -31,14 +40,25 @@ const formatDate = (date) => {
 };
 
 export default {
-  setup() {
+  props: {
+    minDate: String,
+  },
+  setup(props, { emit }) {
     const dateString = formatDate(new Date());
     const date = ref(dateString);
     const proxyDate = ref(dateString);
 
+    const isValidDate = computed(() => {
+      return (
+        !props.minDate ||
+        Date.parse(proxyDate.value) >= Date.parse(props.minDate)
+      );
+    });
+
     return {
       date,
       proxyDate,
+      isValidDate,
 
       updateProxy() {
         proxyDate.value = date.value;
@@ -46,10 +66,17 @@ export default {
 
       save() {
         date.value = proxyDate.value;
+        emit("date-change", date.value);
       },
     };
   },
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.error-tooltip {
+  position: absolute;
+  top: -3em;
+  left: 0;
+}
+</style>

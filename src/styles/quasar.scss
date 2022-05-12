@@ -8,6 +8,7 @@ h1 {
   line-height: 28.13px;
   margin: 0;
   margin-bottom: 4px;
+  white-space: normal;
 }
 
 h2 {
@@ -15,4 +16,9 @@ h2 {
   font-weight: 700;
   line-height: 18.75px;
   margin: 0;
+  white-space: normal;
+}
+
+.q-date__today {
+  box-shadow: none;
 }
