@@ -28,32 +28,18 @@
 <script>
 import DropdownButton from "./DropdownButton.vue";
 import DateButton from "./DateButton.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
-import fakeData from "../apiExamples/everything";
-
-const MOCK_PROJECTS = [
-  "All projects",
-  "Project 1",
-  "Project 2",
-  "Project 3",
-  "Project 4",
-  "Project 5",
-];
-
-const MOCK_GATEWAYS = [
-  "All gateways",
-  "Gateway 1",
-  "Gateway 2",
-  "Gateway 3",
-  "Gateway 4",
-  "Gateway 5",
-];
+import { generateReport } from "../api";
 
 export default {
   components: { DropdownButton, DateButton },
+  props: {
+    projects: Array,
+    gateways: Array,
+  },
 
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const formData = ref({
       projects: [],
       gateways: [],
@@ -63,16 +49,25 @@ export default {
 
     return {
       formData,
-      projectOptions: MOCK_PROJECTS,
-      gatewayOptions: MOCK_GATEWAYS,
+      projectOptions: computed(() => [
+        "All projects",
+        ...props.projects.map((p) => p.name),
+      ]),
+      gatewayOptions: computed(() => [
+        "All gateways",
+        ...props.gateways.map((g) => g.name),
+      ]),
       editForm: (key, value) => {
         formData.value[key] = value;
       },
-      getReport: () =>
+      getReport: async () => {
+        const reportData = await generateReport(formData.value);
+
         emit("report", {
           filters: formData.value,
-          data: fakeData.data,
-        }),
+          data: reportData,
+        });
+      },
     };
   },
 };

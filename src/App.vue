@@ -11,6 +11,8 @@
 
         <header-button-dock
           class="col"
+          :projects="projects"
+          :gateways="gateways"
           @report="showReport"
         ></header-button-dock>
       </q-toolbar>
@@ -26,6 +28,8 @@
 import { ref } from "@vue/reactivity";
 import HeaderButtonDock from "./components/HeaderButtonDock.vue";
 import ChartLayout from "./components/layouts/ChartLayout.vue";
+import { getGateways, getProjects } from "./api";
+import { onBeforeMount } from "@vue/runtime-core";
 
 export default {
   name: "App",
@@ -37,8 +41,22 @@ export default {
       groupBy: "",
     });
 
+    const projects = ref([]);
+    const gateways = ref([]);
+
+    onBeforeMount(async () => {
+      Promise.all([getProjects(), getGateways()]).then(
+        ([projectsResponse, gatewaysResponse]) => {
+          projects.value = projectsResponse;
+          gateways.value = gatewaysResponse;
+        }
+      );
+    });
+
     return {
       reportData,
+      projects,
+      gateways,
       showReport: ({ filters, data }) => {
         reportData.value.data = data;
         reportData.value.filters = filters;

@@ -15,12 +15,18 @@
 
 <script>
 import { ref } from "@vue/reactivity";
+import { onBeforeMount } from "@vue/runtime-core";
 export default {
   props: {
     options: Array,
   },
   setup(props, { emit }) {
     const selectedOptions = ref([props.options[0]]);
+
+    onBeforeMount(() => {
+      if (!selectedOptions.value.length)
+        selectedOptions.value = props.options[0];
+    });
 
     return {
       selectedOptions,
