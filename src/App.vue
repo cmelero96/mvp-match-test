@@ -16,36 +16,47 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container> </q-page-container>
+    <q-page-container>
+      <donut-chart
+        :data-entries="reportData.data"
+        :groupBy="'project'"
+      ></donut-chart>
+    </q-page-container>
   </q-layout>
 </template>
 
 <script>
+import { ref } from "@vue/reactivity";
 import HeaderButtonDock from "./components/HeaderButtonDock.vue";
+import DonutChart from "./components/layouts/DonutChart.vue";
 
-const REPORT_LAYOUTS = {
-  graph: "Graph layout",
-  multi: "Multi layout",
-  single: "Single project & gateway layout",
-};
+// const REPORT_LAYOUTS = {
+//   graph: "Graph layout",
+//   multi: "Multi layout",
+//   single: "Single project & gateway layout",
+// };
 
 export default {
   name: "App",
-  components: { HeaderButtonDock },
+  components: { HeaderButtonDock, DonutChart },
 
   setup() {
-    return {
-      showReport: ({ filters }) => {
-        let layout;
-        if ((filters.projects === 1) ^ (filters.gateways === 1)) {
-          layout = "graph";
-        } else if (filters.projects === 1 && filters.gateways === 1) {
-          layout = "single";
-        } else {
-          layout = "multi";
-        }
+    const reportData = ref({
+      data: [],
+      groupBy: "",
+    });
 
-        console.log(REPORT_LAYOUTS[layout]);
+    return {
+      reportData,
+      showReport: ({ filters, data }) => {
+        reportData.value.data = data;
+        if ((filters.projects === 1) ^ (filters.gateways === 1)) {
+          reportData.value.groupBy = "graph";
+        } else if (filters.projects === 1 && filters.gateways === 1) {
+          reportData.value.groupBy = "single";
+        } else {
+          reportData.value.groupBy = "multi";
+        }
       },
     };
   },
