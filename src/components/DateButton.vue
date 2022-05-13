@@ -1,5 +1,10 @@
 <template>
-  <q-btn no-caps color="secondary" icon-right="calendar_today">
+  <q-btn
+    no-caps
+    color="secondary"
+    icon-right="calendar_today"
+    :label="`${label} ${date}`"
+  >
     <q-popup-proxy
       @before-show="updateProxy"
       transition-show="scale"
@@ -41,6 +46,7 @@ const formatDate = (date) => {
 
 export default {
   props: {
+    label: String,
     minDate: String,
   },
   setup(props, { emit }) {

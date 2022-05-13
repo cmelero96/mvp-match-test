@@ -11,12 +11,12 @@
     ></dropdown-button>
 
     <date-button
-      label="From date"
+      label="From"
       @date-change="(date) => editForm('fromDate', date)"
     ></date-button>
 
     <date-button
-      label="To date"
+      label="To"
       :min-date="formData.fromDate"
       @date-change="(date) => editForm('toDate', date)"
     ></date-button>
