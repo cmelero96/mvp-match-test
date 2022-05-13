@@ -1,6 +1,10 @@
 <template>
   <div>
-    <JSCharting :options="getChartOptions()" ref="chart"></JSCharting>
+    <JSCharting
+      v-if="dataEntries.length"
+      :options="getChartOptions()"
+      style="width: 270px; height: 270px; margin: 0px auto"
+    ></JSCharting>
   </div>
 </template>
 
@@ -62,3 +66,6 @@ export default {
   },
 };
 </script>
+<style lang="sass" scoped>
+.donut-chart
+</style>
