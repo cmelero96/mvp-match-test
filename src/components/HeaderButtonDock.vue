@@ -1,8 +1,8 @@
 <template>
   <div class="header-button-dock row justify-end">
-    <dropdown-button label="All projects"></dropdown-button>
+    <dropdown-button :options="projectOptions"></dropdown-button>
 
-    <dropdown-button label="Gateway 1"></dropdown-button>
+    <dropdown-button :options="gatewayOptions"></dropdown-button>
 
     <date-button
       label="From date"
@@ -24,6 +24,24 @@ import DropdownButton from "./DropdownButton.vue";
 import DateButton from "./DateButton.vue";
 import { ref } from "vue";
 
+const MOCK_PROJECTS = [
+  "All projects",
+  "Project 1",
+  "Project 2",
+  "Project 3",
+  "Project 4",
+  "Project 5",
+];
+
+const MOCK_GATEWAYS = [
+  "All gateways",
+  "Gateway 1",
+  "Gateway 2",
+  "Gateway 3",
+  "Gateway 4",
+  "Gateway 5",
+];
+
 export default {
   components: { DropdownButton, DateButton },
 
@@ -35,12 +53,15 @@ export default {
       toDate: "",
     });
 
-    const editForm = (key, value) => {
-      formData.value[key] = value;
-      console.log(formData.value.fromDate);
+    return {
+      formData,
+      projectOptions: MOCK_PROJECTS,
+      gatewayOptions: MOCK_GATEWAYS,
+      editForm: (key, value) => {
+        formData.value[key] = value;
+        console.log(formData.value.fromDate);
+      },
     };
-
-    return { formData, editForm };
   },
 };
 </script>
