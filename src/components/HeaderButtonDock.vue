@@ -1,8 +1,14 @@
 <template>
   <div class="header-button-dock row justify-end">
-    <dropdown-button :options="projectOptions"></dropdown-button>
+    <dropdown-button
+      @select-option="(options) => editForm('projects', options)"
+      :options="projectOptions"
+    ></dropdown-button>
 
-    <dropdown-button :options="gatewayOptions"></dropdown-button>
+    <dropdown-button
+      @select-option="(options) => editForm('gateways', options)"
+      :options="gatewayOptions"
+    ></dropdown-button>
 
     <date-button
       label="From date"
@@ -15,7 +21,7 @@
       @date-change="(date) => editForm('toDate', date)"
     ></date-button>
 
-    <q-btn color="primary" label="Generate report" no-caps />
+    <q-btn color="primary" label="Generate report" no-caps @click="getReport" />
   </div>
 </template>
 
@@ -23,6 +29,8 @@
 import DropdownButton from "./DropdownButton.vue";
 import DateButton from "./DateButton.vue";
 import { ref } from "vue";
+
+import fakeData from "../apiExamples/everything";
 
 const MOCK_PROJECTS = [
   "All projects",
@@ -45,7 +53,7 @@ const MOCK_GATEWAYS = [
 export default {
   components: { DropdownButton, DateButton },
 
-  setup() {
+  setup(_, { emit }) {
     const formData = ref({
       projects: [],
       gateways: [],
@@ -59,8 +67,15 @@ export default {
       gatewayOptions: MOCK_GATEWAYS,
       editForm: (key, value) => {
         formData.value[key] = value;
-        console.log(formData.value.fromDate);
       },
+      getReport: () =>
+        emit("report", {
+          filters: {
+            projects: formData.value.projects.length,
+            gateways: formData.value.gateways.length,
+          },
+          data: fakeData.data,
+        }),
     };
   },
 };

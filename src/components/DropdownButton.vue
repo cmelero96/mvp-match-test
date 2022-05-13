@@ -19,7 +19,7 @@ export default {
   props: {
     options: Array,
   },
-  setup(props) {
+  setup(props, { emit }) {
     const selectedOptions = ref([props.options[0]]);
 
     return {
@@ -32,6 +32,13 @@ export default {
             (opt) => e.includes(opt) && opt !== props.options[0]
           );
         }
+
+        emit(
+          "select-option",
+          selectedOptions.value[0] === props.options[0]
+            ? []
+            : selectedOptions.value
+        );
       },
     };
   },

@@ -9,7 +9,10 @@
           </h2>
         </q-toolbar-title>
 
-        <header-button-dock class="col"></header-button-dock>
+        <header-button-dock
+          class="col"
+          @report="showReport"
+        ></header-button-dock>
       </q-toolbar>
     </q-header>
 
@@ -19,9 +22,33 @@
 
 <script>
 import HeaderButtonDock from "./components/HeaderButtonDock.vue";
+
+const REPORT_LAYOUTS = {
+  graph: "Graph layout",
+  multi: "Multi layout",
+  single: "Single project & gateway layout",
+};
+
 export default {
   name: "App",
   components: { HeaderButtonDock },
+
+  setup() {
+    return {
+      showReport: ({ filters }) => {
+        let layout;
+        if ((filters.projects === 1) ^ (filters.gateways === 1)) {
+          layout = "graph";
+        } else if (filters.projects === 1 && filters.gateways === 1) {
+          layout = "single";
+        } else {
+          layout = "multi";
+        }
+
+        console.log(REPORT_LAYOUTS[layout]);
+      },
+    };
+  },
 };
 </script>
 
