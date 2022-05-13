@@ -1,0 +1,13 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "projectId": "1",
+      "name": "Gateway 1"
+    },
+    {
+      "projectId": "2",
+      "name": "Gateway 2"
+    }
+  ]
+}

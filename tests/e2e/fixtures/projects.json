@@ -1,0 +1,13 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "projectId": "1",
+      "name": "Project 1"
+    },
+    {
+      "projectId": "2",
+      "name": "Project 2"
+    }
+  ]
+}

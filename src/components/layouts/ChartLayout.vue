@@ -65,11 +65,17 @@ export default {
       aggregatedData: computed(() => {
         if (!sortKey.value) return [];
 
+        console.log(props.reportData);
+
         const grouped = props.reportData.data.reduce((prev, dataObj) => {
           const groupKey = dataObj[`${sortKey.value}Id`];
           prev[groupKey] = prev[groupKey] || 0 + dataObj.amount;
           return prev;
         }, {});
+
+        console.log(grouped);
+        console.log(`${sortKey.value}s`);
+        console.log(props[`${sortKey.value}s`]);
 
         return Object.entries(grouped).map(([id, amount]) => ({
           x: props[`${sortKey.value}s`].find(

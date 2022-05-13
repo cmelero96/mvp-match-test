@@ -1,27 +1,37 @@
 <template>
   <div class="header-button-dock row justify-end">
     <dropdown-button
+      data-test="projects-select"
       @select-option="(options) => editForm('projects', options)"
       :options="projectOptions"
     ></dropdown-button>
 
     <dropdown-button
+      data-test="gateways-select"
       @select-option="(options) => editForm('gateways', options)"
       :options="gatewayOptions"
     ></dropdown-button>
 
     <date-button
+      data-test="from-date-picker"
       label="From"
       @date-change="(date) => editForm('fromDate', date)"
     ></date-button>
 
     <date-button
+      data-test="to-date-picker"
       label="To"
       :min-date="formData.fromDate"
       @date-change="(date) => editForm('toDate', date)"
     ></date-button>
 
-    <q-btn color="primary" label="Generate report" no-caps @click="getReport" />
+    <q-btn
+      data-test="report-button"
+      color="primary"
+      label="Generate report"
+      no-caps
+      @click="getReport"
+    />
   </div>
 </template>
 
@@ -62,6 +72,7 @@ export default {
       },
       getReport: async () => {
         const reportData = await generateReport(formData.value);
+        console.log(reportData);
 
         emit("report", {
           filters: formData.value,

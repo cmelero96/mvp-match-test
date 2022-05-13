@@ -48,7 +48,7 @@ export default {
     const projects = ref([]);
     const gateways = ref([]);
 
-    onBeforeMount(async () => {
+    onBeforeMount(() => {
       Promise.all([getProjects(), getGateways()]).then(
         ([projectsResponse, gatewaysResponse]) => {
           projects.value = projectsResponse;

@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <JSCharting :options="chartOptions" class="donut-chart"></JSCharting>
-  </div>
+  <JSCharting
+    class="donut-chart"
+    data-test="donut-chart"
+    :options="chartOptions"
+  ></JSCharting>
 </template>
 
 <script>

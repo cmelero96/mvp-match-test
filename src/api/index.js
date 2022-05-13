@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE_URL = "http://178.63.13.157:8090/mock-api/api";
 
-const ENDPOINTS = {
+export const ENDPOINTS = {
   USERS: "users",
   PROJECTS: "projects",
   GATEWAYS: "gateways",
@@ -47,6 +47,17 @@ export const generateReport = async (formData) => {
     const { data } = await axios.post(
       `${BASE_URL}/${ENDPOINTS.REPORT}`,
       payload
+    );
+    console.log(
+      JSON.stringify(
+        data.data.map((d) => ({
+          paymentId: d.paymentId,
+          amount: d.amount,
+          projectId: d.projectId,
+          gatewayId: d.gatewayId,
+          modified: d.modified,
+        }))
+      )
     );
     if (failedRequest(data)) throw data;
 
