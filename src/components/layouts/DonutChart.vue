@@ -7,6 +7,8 @@
 <script>
 import JSCharting from "jscharting-vue";
 
+const CURRENCY = "USD";
+
 export default {
   props: {
     dataEntries: Array,
@@ -41,14 +43,12 @@ export default {
           template: "%icon %name",
         },
         defaultPoint: {
-          tooltip: "<b>%name</b><br/><b>%yValueM</b> units sold in %seriesName",
+          tooltip: `<b>%name</b>: %yValue ${CURRENCY}`,
           label: {
-            text: "<b>{%percentOfSeries:n1}%</b>",
+            text: "<b>{%percentOfSeries:n0}%</b>",
             placement: "inside",
           },
         },
-        yAxis: { label_text: "Units Sold" },
-        xAxis: { label_text: "Quarter" },
         series: [
           {
             points: this.aggregatedData,
