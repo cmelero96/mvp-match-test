@@ -1,47 +1,21 @@
 <template>
   <div>
-    <JSCharting
-      v-if="dataEntries.length"
-      :options="getChartOptions()"
-      style="width: 270px; height: 270px; margin: 0px auto"
-    ></JSCharting>
+    <JSCharting :options="chartOptions" class="donut-chart"></JSCharting>
   </div>
 </template>
 
 <script>
 import JSCharting from "jscharting-vue";
-
-const CURRENCY = "USD";
+import { ref } from "vue";
+import { CURRENCY } from "../../constants";
 
 export default {
   props: {
     dataEntries: Array,
-    groupBy: String,
   },
-  data() {
-    return {};
-  },
-  computed: {
-    aggregatedData() {
-      const key = this.groupBy;
-
-      if (!key) return [];
-
-      const grouped = this.dataEntries.reduce((prev, dataObj) => {
-        const groupKey = dataObj[`${key}Id`];
-        prev[groupKey] = prev[groupKey] || 0 + dataObj.amount;
-        return prev;
-      }, {});
-
-      return Object.entries(grouped).map(([id, amount]) => ({
-        x: id,
-        y: amount,
-      }));
-    },
-  },
-  methods: {
-    getChartOptions() {
-      return {
+  setup(props) {
+    return {
+      chartOptions: ref({
         type: "pie donut",
         legend: {
           template: "%icon %name",
@@ -55,17 +29,20 @@ export default {
         },
         series: [
           {
-            points: this.aggregatedData,
+            points: props.dataEntries,
           },
         ],
-      };
-    },
+      }),
+    };
   },
   components: {
     JSCharting,
   },
 };
 </script>
-<style lang="sass" scoped>
-.donut-chart
+<style lang="scss" scoped>
+.donut-chart {
+  margin: 0px auto;
+  height: 600px;
+}
 </style>

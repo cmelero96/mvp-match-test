@@ -16,11 +16,8 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container>
-      <donut-chart
-        :data-entries="reportData.data"
-        :groupBy="'project'"
-      ></donut-chart>
+    <q-page-container v-if="reportData.data.length">
+      <chart-layout :report-data="reportData"></chart-layout>
     </q-page-container>
   </q-layout>
 </template>
@@ -28,17 +25,11 @@
 <script>
 import { ref } from "@vue/reactivity";
 import HeaderButtonDock from "./components/HeaderButtonDock.vue";
-import DonutChart from "./components/layouts/DonutChart.vue";
-
-// const REPORT_LAYOUTS = {
-//   graph: "Graph layout",
-//   multi: "Multi layout",
-//   single: "Single project & gateway layout",
-// };
+import ChartLayout from "./components/layouts/ChartLayout.vue";
 
 export default {
   name: "App",
-  components: { HeaderButtonDock, DonutChart },
+  components: { HeaderButtonDock, ChartLayout },
 
   setup() {
     const reportData = ref({
@@ -50,13 +41,7 @@ export default {
       reportData,
       showReport: ({ filters, data }) => {
         reportData.value.data = data;
-        if ((filters.projects === 1) ^ (filters.gateways === 1)) {
-          reportData.value.groupBy = "graph";
-        } else if (filters.projects === 1 && filters.gateways === 1) {
-          reportData.value.groupBy = "single";
-        } else {
-          reportData.value.groupBy = "multi";
-        }
+        reportData.value.filters = filters;
       },
     };
   },

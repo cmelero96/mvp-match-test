@@ -70,10 +70,7 @@ export default {
       },
       getReport: () =>
         emit("report", {
-          filters: {
-            projects: formData.value.projects.length,
-            gateways: formData.value.gateways.length,
-          },
+          filters: formData.value,
           data: fakeData.data,
         }),
     };
