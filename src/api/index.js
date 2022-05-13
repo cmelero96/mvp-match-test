@@ -48,17 +48,6 @@ export const generateReport = async (formData) => {
       `${BASE_URL}/${ENDPOINTS.REPORT}`,
       payload
     );
-    console.log(
-      JSON.stringify(
-        data.data.map((d) => ({
-          paymentId: d.paymentId,
-          amount: d.amount,
-          projectId: d.projectId,
-          gatewayId: d.gatewayId,
-          modified: d.modified,
-        }))
-      )
-    );
     if (failedRequest(data)) throw data;
 
     return data.data;
