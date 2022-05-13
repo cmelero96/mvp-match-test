@@ -14,7 +14,7 @@
               <q-item class="fit items-center">
                 <div class="col">{{ group.x }}</div>
                 <q-space></q-space>
-                <div class="col">{{ `TOTAL: ${group.y} ${CURRENCY}` }}</div>
+                <div class="col-4">{{ `TOTAL: ${group.y} ${CURRENCY}` }}</div>
               </q-item>
             </template>
             <template v-slot:default>
@@ -25,7 +25,7 @@
                     flat
                     virtual-scroll
                     class="full-width q-ma-md"
-                    :rows="rowGroups[group.x]"
+                    :rows="rowGroups[group.id]"
                     :columns="tableColumns"
                     row-key="id"
                   >
@@ -55,6 +55,8 @@ export default {
   components: { DonutChart },
   props: {
     reportData: Object,
+    projects: Array,
+    gateways: Array,
   },
 
   setup(props) {
@@ -68,16 +70,13 @@ export default {
           prev[groupKey] = prev[groupKey] || 0 + dataObj.amount;
           return prev;
         }, {});
-        console.log(
-          Object.entries(grouped).map(([id, amount]) => ({
-            x: id,
-            y: amount,
-          }))
-        );
 
         return Object.entries(grouped).map(([id, amount]) => ({
-          x: id,
+          x: props[`${sortKey.value}s`].find(
+            ({ id: groupId }) => groupId === id
+          ).name,
           y: amount,
+          id,
         }));
       }),
       tableColumns: [

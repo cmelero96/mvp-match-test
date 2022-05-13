@@ -19,7 +19,11 @@
     </q-header>
 
     <q-page-container v-if="reportData.data.length">
-      <chart-layout :report-data="reportData"></chart-layout>
+      <chart-layout
+        :projects="projects"
+        :gateways="gateways"
+        :report-data="reportData"
+      ></chart-layout>
     </q-page-container>
   </q-layout>
 </template>

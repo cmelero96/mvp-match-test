@@ -48,7 +48,9 @@ export const generateReport = async (formData) => {
       `${BASE_URL}/${ENDPOINTS.REPORT}`,
       payload
     );
-    return data;
+    if (failedRequest(data)) throw data;
+
+    return data.data;
   } catch (error) {
     console.error(error);
     return [];
